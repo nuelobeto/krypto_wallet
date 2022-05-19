@@ -1,7 +1,8 @@
 import { useContext, useEffect } from "react";
 import { GlobalContext } from "../../context/GlobalState";
 import "./SendTransaction.css";
-import { MdOutlineClose } from "react-icons/md";
+import { FaEthereum } from "react-icons/fa";
+import { IoMdArrowRoundBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 
 function SendTransaction() {
@@ -29,9 +30,18 @@ function SendTransaction() {
 
   return (
     <div className="sendTX container">
-      <div className="form_header">
-        <h2>Send Ether</h2>
-        <MdOutlineClose onClick={() => navigate("/", { replace: true })} />
+      <div className="header">
+        <div className="logo">
+          <FaEthereum />
+        </div>
+        <div className="app_name">
+          <h2>KRYPTON</h2>
+        </div>
+        <button className="header_btn" style={{ fontSize: "18px" }}>
+          <IoMdArrowRoundBack
+            onClick={() => navigate("/", { replace: true })}
+          />
+        </button>
       </div>
 
       <div className="form_body">
@@ -59,12 +69,12 @@ function SendTransaction() {
 
       <div className="form_footer">
         <button
-          className="cancel"
+          className="general_btn cancel"
           onClick={() => navigate("/", { replace: true })}
         >
           Cancel
         </button>
-        <button className="next" onClick={handleSubmit}>
+        <button className="general_btn" onClick={handleSubmit}>
           Next
         </button>
       </div>

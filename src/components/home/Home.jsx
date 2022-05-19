@@ -1,8 +1,9 @@
 import { useContext, useState, useEffect, useCallback } from "react";
 import { GlobalContext } from "../../context/GlobalState";
 import "./Home.css";
-import { BiUpArrowAlt } from "react-icons/bi";
 import { FaEthereum } from "react-icons/fa";
+import { FiPower } from "react-icons/fi";
+import { FaRegUserCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 function Home() {
@@ -24,49 +25,56 @@ function Home() {
   return (
     <div className="home container">
       <div className="header">
+        <div className="logo">
+          <FaEthereum />
+        </div>
+        <div className="app_name">
+          <h2>KRYPTON</h2>
+        </div>
         {!address ? (
-          <button className="connect_btn" onClick={connectWallet}>
-            Connect wallet
+          <button className="header_btn" onClick={connectWallet}>
+            <FiPower />
           </button>
         ) : (
-          <>
-            <div className="logo">
-              <div className="logo_inner"></div>
-            </div>
-            <div className="account_details">
-              <h2>Account 1</h2>
-              <p>{`${address.slice(0, 6)}...${address.slice(
-                address.length - 4
-              )}`}</p>
-            </div>
-          </>
+          <div className="user">
+            <FaRegUserCircle />
+          </div>
         )}
       </div>
 
       {!address ? (
-        <h3>Please connect to Metamask.</h3>
+        <h3 style={{ margin: "0 0 0 1.5rem", color: "#fff" }}>
+          Please connect to Metamask.
+        </h3>
       ) : (
         <>
-          <div className="assets">
-            <h3>{accountBalance} ETH</h3>
-            <p>{`$${dollarBallance.toFixed(2)}`} USD</p>
-            <div className="up_arrow">
-              <BiUpArrowAlt />
+          <div className="assets_wrapper">
+            <div className="assets">
+              <h3>
+                Address:{" "}
+                {`${address.slice(0, 6)}...${address.slice(
+                  address.length - 4
+                )}`}
+              </h3>
+              <h3>
+                <span>{accountBalance} ETH</span>
+              </h3>
+              <p>{`$${dollarBallance.toFixed(2)}`} USD</p>
             </div>
+          </div>
+
+          <div className="open_form_wrapper">
             <button
-              className="open_form"
+              className="general_btn"
               onClick={() => navigate("/send-transaction")}
             >
-              Send
+              Send Ether
             </button>
           </div>
 
           <div className="history">
             {history.map((item, index) => (
               <div className="transaction" key={index}>
-                <div className="eth_logo">
-                  <FaEthereum />
-                </div>
                 <div className="txType_and_time">
                   <h4>Sent Ether</h4>
                   <p>
@@ -75,7 +83,7 @@ function Home() {
                 </div>
                 <div className="amount">
                   <h4>-{item.amount} ETH</h4>
-                  <p>${item.dollarAmount} USD</p>
+                  <p>-${item.dollarAmount} USD</p>
                 </div>
               </div>
             ))}

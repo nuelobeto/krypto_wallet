@@ -8,21 +8,23 @@
 
 .success svg {
   font-size: 100px;
-  color: rgb(0, 132, 255);
+  color: #02f0a1;
 }
 
 .success h2 {
   margin: 20px 0 0;
+  color: #02f0a1;
 }
 
 .success p {
   margin: 10px 0 0;
+  color: #808080;
 }
 
 .eth_scan {
   font-size: 20px;
   text-decoration: none;
-  color: rgb(0, 132, 255);
+  color: #02f0a1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -41,14 +43,4 @@
   padding: 1.5rem;
   display: flex;
   align-items: center;
-}
-
-.success_footer button {
-  width: 100%;
-  padding: 1rem 0;
-  border-radius: 5px;
-  cursor: pointer;
-  border: 3px solid black;
-  background: transparent;
-  cursor: pointer;
 }
