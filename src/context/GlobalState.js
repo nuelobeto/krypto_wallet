@@ -5,9 +5,6 @@ import { ethers } from "ethers";
 export const GlobalContext = createContext();
 
 export const GlobalProvider = ({ children }) => {
-  // Provider
-  const provider = new ethers.providers.Web3Provider(window.ethereum);
-
   // States
   const [address, setAddress] = useState("");
   const [accountBalance, setAccountBalance] = useState(0);
@@ -28,18 +25,26 @@ export const GlobalProvider = ({ children }) => {
   // Functions
   const connectWallet = async () => {
     try {
-      await provider.send("eth_requestAccounts", []);
-      const signer = provider.getSigner();
-      let currentAddress = await signer.getAddress();
+      if (typeof window.ethereum === "undefined") {
+        return;
+      } else {
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        await provider.send("eth_requestAccounts", []);
+        const signer = provider.getSigner();
+        let currentAddress = await signer.getAddress();
 
-      setAddress(currentAddress);
+        setAddress(currentAddress);
+      }
     } catch (error) {
       console.log("error");
     }
   };
 
   const getAddress = async () => {
-    if (provider) {
+    if (typeof window.ethereum === "undefined") {
+      return;
+    } else {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
       let currentAddress = await signer.getAddress();
 
@@ -47,20 +52,27 @@ export const GlobalProvider = ({ children }) => {
     }
   };
 
-  window.ethereum.on("accountsChanged", (accounts) => {
-    getAddress();
-  });
-
-  window.ethereum.on("disconnect", (accounts) => {
-    window.location.reload();
-  });
+  const handleAccountChange = () => {
+    if (typeof window.ethereum === "undefined") {
+      return;
+    } else {
+      window.ethereum.on("accountsChanged", (accounts) => {
+        getAddress();
+      });
+    }
+  };
 
   const getBalance = async () => {
     try {
-      let balance = await provider.getBalance(address);
-      balance = parseFloat(ethers.utils.formatEther(balance));
+      if (typeof window.ethereum === "undefined") {
+        return;
+      } else {
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        let balance = await provider.getBalance(address);
+        balance = parseFloat(ethers.utils.formatEther(balance));
 
-      setAccountBalance(balance.toFixed(2));
+        setAccountBalance(balance.toFixed(2));
+      }
     } catch (error) {
       console.log(error);
     }
@@ -68,8 +80,8 @@ export const GlobalProvider = ({ children }) => {
 
   const sendTransaction = async () => {
     try {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
       const { addressTo, amount } = formData;
-
       const parsedAmount = ethers.utils.parseEther(amount);
 
       const tx = await window.ethereum.request({
@@ -111,6 +123,7 @@ export const GlobalProvider = ({ children }) => {
 
   useEffect(() => {
     getAddress();
+    handleAccountChange();
     getBalance();
   });
 

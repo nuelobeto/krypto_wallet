@@ -43,9 +43,23 @@ function Home() {
       </div>
 
       {!address ? (
-        <h3 style={{ margin: "0 0 0 1.5rem", color: "#fff" }}>
-          Please connect to Metamask.
-        </h3>
+        <>
+          <h3 style={{ margin: "0 1.5rem 1rem", color: "#fff" }}>
+            Please connect to Metamask.
+          </h3>
+          <h3 style={{ margin: "0 1.5rem", color: "grey", fontSize: "14px" }}>
+            If you do not have Metamask installed, kindly follow the{" "}
+            <a
+              href="https://metamask.io/"
+              target="_blank"
+              rel="noreferrer"
+              style={{ textDecoration: "none", color: "#02f0a1" }}
+            >
+              link
+            </a>{" "}
+            to download it.
+          </h3>
+        </>
       ) : (
         <>
           <div className="assets_wrapper">
