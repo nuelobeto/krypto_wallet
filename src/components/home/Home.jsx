@@ -59,6 +59,12 @@ function Home() {
             </a>{" "}
             to download it.
           </h3>
+          <h3
+            style={{ margin: "1rem 1.5rem", color: "grey", fontSize: "14px" }}
+          >
+            If you are on a mobile device, please switch to a laptop or desktop
+            that has Metamask installed on it.
+          </h3>
         </>
       ) : (
         <>

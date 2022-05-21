@@ -80,43 +80,48 @@ export const GlobalProvider = ({ children }) => {
 
   const sendTransaction = async () => {
     try {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const { addressTo, amount } = formData;
-      const parsedAmount = ethers.utils.parseEther(amount);
+      if (typeof window.ethereum === "undefined") {
+        return;
+      } else {
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const { addressTo, amount } = formData;
+        const parsedAmount = ethers.utils.parseEther(amount);
 
-      const tx = await window.ethereum.request({
-        method: "eth_sendTransaction",
-        params: [
-          {
-            from: address,
-            to: addressTo,
-            gas: "0x5208",
-            value: parsedAmount._hex,
-          },
-        ],
-      });
+        const tx = await window.ethereum.request({
+          method: "eth_sendTransaction",
+          params: [
+            {
+              from: address,
+              to: addressTo,
+              gas: "0x5208",
+              value: parsedAmount._hex,
+            },
+          ],
+        });
 
-      const confirmedTX = await provider.getTransaction(tx);
-      setConfirmTransaction(confirmedTX);
-      setHash(confirmedTX);
-      setFormData({ ...formData, addressTo: "", amount: "" });
+        const confirmedTX = await provider.getTransaction(tx);
+        setConfirmTransaction(confirmedTX);
+        setHash(confirmedTX);
+        setFormData({ ...formData, addressTo: "", amount: "" });
+      }
     } catch (error) {
       console.log(error);
     }
   };
 
   const getHistory = () => {
+    if (formData.addressTo === "" || formData.amount === "") {
+      return;
+    }
+
     const newTransaction = {
       txType: "Sent Ether",
       amount: formData.amount,
       date,
       time,
       dollarAmount: (formData.amount * 2016.14).toFixed(2),
+      address,
     };
-
-    if (formData.addressTo === "" || formData.amount === "") {
-      return;
-    }
 
     setHistory([newTransaction, ...history]);
   };
